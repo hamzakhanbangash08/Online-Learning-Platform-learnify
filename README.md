@@ -8,16 +8,22 @@ Responsive UI: A clean and modern user interface designed with Bootstrap for a s
 Enrollment & Progress Tracking: Students can enroll in courses, and their enrollment status is tracked.
 
 Technologies Used 💻
+
 Backend: PHP, Laravel Framework
+
 Frontend: HTML, CSS, Bootstrap, JavaScript
+
 Database: MySQL
+
 Other: Composer, npm
 
 Getting Started 🛠️
 Follow these steps to set up the project locally:
 
 Clone the repository:
+
 Bash
+
 https://github.com/hamzakhanbangash08/Online-Learning-Platform-learnify.git
 cd your-repo-name
 Install dependencies:
