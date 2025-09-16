@@ -174,7 +174,7 @@
             Explore a world of courses in tech, business, and creativity. Taught by industry leaders, for everyone.
         </p>
         <div class="d-flex justify-content-center gap-3">
-            <a href="#courses" class="btn btn-lg btn-custom btn-custom-primary animate__animated animate__zoomIn animate__delay-2s">Explore All Courses</a>
+            <a href="{{ route('courses.index') }}" class="btn btn-lg btn-custom btn-custom-primary animate__animated animate__zoomIn animate__delay-2s">Explore All Courses</a>
             <a href="#" class="btn btn-lg btn-light btn-custom animate__animated animate__zoomIn animate__delay-2s">Watch Intro Video</a>
         </div>
     </div>
@@ -184,61 +184,26 @@
     <div class="container">
         <h2 class="section-title text-center">Browse Top Categories</h2>
         <div class="row g-4 justify-content-center">
-            <div class="col-md-3 col-sm-6">
-                <a href="#" class="text-decoration-none text-dark">
-                    <div class="card p-4 text-center border-0 shadow-sm category-card h-100">
-                        <div class="d-flex flex-column align-items-center">
-                            <div class="category-icon-container mb-3">
-                                <i class="bi bi-code-slash fs-3 text-primary"></i>
+            @foreach($categories as $category)
+                <div class="col-md-3 col-sm-6">
+                    <a href="{{ route('courses.index', ['category' => $category->slug]) }}" class="text-decoration-none text-dark">
+                        <div class="card p-4 text-center border-0 shadow-sm category-card h-100">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="category-icon-container mb-3">
+                                    <i class="{{ $category->icon }} fs-3 text-primary"></i>
+                                </div>
+                                <h5 class="fw-bold mb-1">{{ $category->name }}</h5>
+                                <p class="text-muted small">{{ $category->courses_count }} Courses</p>
                             </div>
-                            <h5 class="fw-bold mb-1">Web Development</h5>
-                            <p class="text-muted small">15 Courses</p>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#" class="text-decoration-none text-dark">
-                    <div class="card p-4 text-center border-0 shadow-sm category-card h-100">
-                        <div class="d-flex flex-column align-items-center">
-                            <div class="category-icon-container mb-3">
-                                <i class="bi bi-easel2-fill fs-3 text-primary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Graphic Design</h5>
-                            <p class="text-muted small">10 Courses</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#" class="text-decoration-none text-dark">
-                    <div class="card p-4 text-center border-0 shadow-sm category-card h-100">
-                        <div class="d-flex flex-column align-items-center">
-                            <div class="category-icon-container mb-3">
-                                <i class="bi bi-briefcase-fill fs-3 text-primary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Business</h5>
-                            <p class="text-muted small">20 Courses</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#" class="text-decoration-none text-dark">
-                    <div class="card p-4 text-center border-0 shadow-sm category-card h-100">
-                        <div class="d-column align-items-center">
-                            <div class="category-icon-container mb-3">
-                                <i class="bi bi-bar-chart-line-fill fs-3 text-primary"></i>
-                            </div>
-                            <h5 class="fw-bold mb-1">Data Science</h5>
-                            <p class="text-muted small">8 Courses</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            @endforeach
         </div>
     </div>
 </section>
+
+
 
 <section id="courses" class="py-5">
     <div class="container">

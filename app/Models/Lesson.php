@@ -18,4 +18,9 @@ class Lesson extends Model
     {
         return !empty($this->video_url) || !empty($this->video_path);
     }
+
+    public function quizzes()
+{
+    return $this->hasMany(Quiz::class);
+}
 }

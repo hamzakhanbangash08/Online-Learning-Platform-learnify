@@ -1,5 +1,185 @@
 @extends('layouts.master')
 
+@section('styles')
+<style>
+    :root {
+        --primary-color: #007bff;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --warning-color: #ffc107;
+        --dark-color: #212529;
+        --light-color: #f8f9fa;
+        --card-bg: #ffffff;
+        --font-family-base: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+        background-color: var(--light-color);
+        font-family: var(--font-family-base);
+        color: var(--dark-color);
+    }
+
+    /* Hero Section */
+    .hero-banner-container {
+        height: 420px;
+        border-bottom-left-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+        overflow: hidden;
+    }
+
+    .hero-banner-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.6);
+        transition: transform 0.6s ease;
+    }
+
+    .hero-banner-container:hover .hero-banner-image {
+        transform: scale(1.08);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.2));
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 2rem;
+        backdrop-filter: blur(3px);
+    }
+
+    .display-4 {
+        font-size: 2.8rem;
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .lead {
+        font-size: 1.2rem;
+        color: rgba(255, 255, 255, 0.85);
+    }
+
+    .price-tag {
+        color: var(--warning-color);
+        font-size: 1.5rem;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Buttons */
+    .custom-btn {
+        padding: 0.8rem 2.2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    .custom-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Section Titles */
+    .section-title {
+        font-size: 1.6rem;
+        position: relative;
+        margin-bottom: 1.5rem;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background-color: var(--primary-color);
+        margin-top: 0.5rem;
+        border-radius: 2px;
+    }
+
+    /* Lesson Cards */
+    .lesson-card {
+        transition: all 0.3s ease;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .lesson-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .lesson-media-container {
+        position: relative;
+        padding-top: 56.25%;
+        background: #e9ecef;
+    }
+
+    .lesson-media-container iframe,
+    .lesson-media-container video,
+    .lesson-media-container .placeholder-media {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    .placeholder-media {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: #6c757d;
+        background: #f1f3f5;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .lesson-content-preview {
+        color: #555;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        -webkit-line-clamp: 3;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Quiz Section */
+    .quiz-section {
+        margin-top: 3rem;
+        padding: 1.5rem;
+        background: var(--card-bg);
+        border-radius: 1rem;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .list-group-item {
+        border: none;
+        padding: 1rem 1.25rem;
+        border-radius: 0.75rem;
+        margin-bottom: 0.75rem;
+        background: #f8f9fa;
+        transition: all 0.2s ease;
+    }
+
+    .list-group-item:hover {
+        background: #e9f2ff;
+        transform: translateX(5px);
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+        .display-4 {
+            font-size: 3.5rem;
+        }
+    }
+</style>
+
+@endsection
+
 @section('content')
 <div class="course-show">
     {{-- Hero Section --}}
@@ -48,10 +228,10 @@
         @endphp
         @if ($canManage)
         <div class="d-flex flex-wrap gap-2 mb-4">
-            <a href="{{ route('lessons.index', ['course' => $course->id]) }}" class="btn btn-outline-secondary">
+            <a href="{{ route('admin.lessons.index', ['course' => $course->id]) }}" class="btn btn-outline-secondary">
                 <i class="bi bi-gear-fill me-2"></i>Manage Lessons
             </a>
-            <a href="{{ route('lessons.create') }}?course_id={{ $course->id }}" class="btn btn-primary">
+            <a href="{{ route('admin.lessons.create') }}?course_id={{ $course->id }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle-fill me-2"></i>New Lesson
             </a>
         </div>
@@ -111,21 +291,30 @@
                             @endif
                         </div>
                         {{-- Manager Controls --}}
-                        @if ($canManage)
+                      
                         <div class="d-flex justify-content-end gap-2 mt-auto pt-3 lesson-actions">
-                            <a href="{{ route('lessons.edit', $lesson) }}" class="btn btn-sm btn-action edit-btn" title="Edit Lesson">
+                            <a href="{{ route('admin.lessons.edit', $lesson) }}" class="btn btn-sm btn-action edit-btn" title="Edit Lesson">
                                 <i class="bi bi-pencil-square"></i>
                                 <span class="d-none d-sm-inline ms-1">Edit</span>
                             </a>
-                            <form action="{{ route('lessons.destroy', $lesson) }}" method="POST" class="d-inline">
+                            <form action="{{ route('admin.lessons.destroy', $lesson) }}" method="POST" class="d-inline">
                                 @csrf @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-action delete-btn" onclick="return confirm('Are you sure you want to delete this lesson?')" title="Delete Lesson">
                                     <i class="bi bi-trash-fill"></i>
                                     <span class="d-none d-sm-inline ms-1">Delete</span>
                                 </button>
                             </form>
-                        </div>
+                           @if($course->quizzes->count())
+                                <a href="{{ route('admin.course.myquizzes', $course->id) }}" target="_blank" class="btn btn-sm btn-action edit-btn">
+                                    <i class="bi bi-clipboard-check me-2"></i>
+                                    View All {{ $course->quizzes->count() }} {{ Str::plural('Quiz', $course->quizzes->count()) }}
+                                </a>
+                        @else
+                            <p class="text-muted mt-5 text-center">No quizzes added yet.</p>
                         @endif
+
+                        </div>
+                       
                     </div>
                 </div>
             </div>
