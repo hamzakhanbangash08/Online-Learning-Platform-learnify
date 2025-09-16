@@ -2,51 +2,29 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Auth;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
-
-    use  HasRoles;
-
-    protected $guarded = [];
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'city',
+        'cnic',
+        'image',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -55,6 +33,7 @@ class User extends Authenticatable
         ];
     }
 
+    // Relationships
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
@@ -63,11 +42,17 @@ class User extends Authenticatable
     public function coursesEnrolled()
     {
         return $this->belongsToMany(Course::class, 'enrollments')
-            ->withPivot('enrolled_at');
+                    ->withPivot('enrolled_at');
     }
 
     public function coursesTaught()
     {
         return $this->hasMany(Course::class, 'user_id'); // agar user instructor hai
+    }
+
+    /// Notifications
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);;
     }
 }

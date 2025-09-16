@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lesson;
 use App\Models\Course;
+use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LessonController extends Controller
 {
@@ -61,7 +62,7 @@ class LessonController extends Controller
 
         Lesson::create($data);
 
-        return redirect()->route('lessons.index')->with('success', 'Lesson created successfully.');
+        return redirect()->route('admin.lessons.index')->with('success', 'Lesson created successfully.');
     }
 
 
@@ -81,33 +82,58 @@ class LessonController extends Controller
     public function edit(Lesson $lesson)
     {
         $courses = Course::all();
-        return view('lessons.edit', compact('lesson', 'courses'));
+        return view('admin.lessons.edit', compact('lesson', 'courses'));
     }
 
     /**
      * Update the specified lesson in storage.
      */
-    public function update(Request $request, Lesson $lesson)
-    {
-        $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'title'     => 'required|string|max:255',
-            'content'   => 'nullable|string',
-            'video_url' => 'nullable|url',
-            'position'  => 'nullable|integer|min:1',
-        ]);
+   /**
+ * Update the specified lesson in storage.
+ */
+public function update(Request $request, Lesson $lesson)
+{
+    $validated = $request->validate([
+        'course_id'  => 'required|exists:courses,id',
+        'title'      => 'required|string|max:255',
+        'content'    => 'nullable|string',
+        'video_url'  => 'nullable|url',
+        'video_path' => 'nullable|file|mimetypes:video/mp4,video/webm,video/ogg|max:50000', // max 50MB
+        'position'   => 'nullable|integer|min:1',
+    ]);
 
-        $lesson->update($validated);
+    // Agar naya video upload hua hai
+    if ($request->hasFile('video_path')) {
+        // Purani file delete karni ho to:
+        if ($lesson->video_path && Storage::disk('public')->exists($lesson->video_path)) {
+            Storage::disk('public')->delete($lesson->video_path);
+        }
 
-        return redirect()->route('lessons.index')->with('success', 'Lesson updated successfully.');
+        // Naya file store karo
+        $path = $request->file('video_path')->store('lessons/videos', 'public');
+        $validated['video_path'] = $path;
     }
+
+    $lesson->update($validated);
+
+    return redirect()->route('admin.lessons.index')->with('success', 'Lesson updated successfully.');
+}
 
     /**
      * Remove the specified lesson from storage.
      */
-    public function destroy(Lesson $lesson)
-    {
-        $lesson->delete();
-        return redirect()->route('lessons.index')->with('success', 'Lesson deleted successfully.');
+   /**
+ * Remove the specified lesson from storage.
+ */
+public function destroy(Lesson $lesson)
+{
+    // Agar lesson ke sath koi video_path hai to usko bhi delete karo
+    if ($lesson->video_path && Storage::disk('public')->exists($lesson->video_path)) {
+        Storage::disk('public')->delete($lesson->video_path);
     }
+
+    $lesson->delete();
+
+    return redirect()->route('admin.lessons.index')->with('success', 'Lesson deleted successfully (including video file).');
 }
+}   

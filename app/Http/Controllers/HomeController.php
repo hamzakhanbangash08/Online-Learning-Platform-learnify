@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
+
 
 class HomeController extends Controller
 {
@@ -21,8 +23,14 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-    {
-        return view('home');
-    }
+    // public function index()
+    // {
+    //     return view('home');
+    // }
+
+     public function browseCategory()
+{
+    $categories = Category::withCount('courses')->get();
+    return view('home', compact('categories'));
+}
 }
