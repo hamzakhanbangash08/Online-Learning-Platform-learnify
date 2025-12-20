@@ -11,65 +11,66 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+     public function index()
     {
-        //
+        $categories = Category::latest()->paginate(10); // 10 per page
+        return view('admin.categories.index', compact('categories'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-   public function create()
+    // Show create form
+    public function create()
     {
-        return view('admin.category.create');
+        return view('admin.categories.create');
     }
 
-    // Store new category
+    // Store category
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name'        => 'required|string|max:255|unique:categories,name',
+        $request->validate([
+            'name' => 'required|unique:categories,name',
             'description' => 'nullable|string',
-            'icon'        => 'nullable|string|max:255',
+            'icon' => 'nullable|string',
         ]);
 
-        // Slug generate
-        $data['slug'] = Str::slug($data['name']);
+        Category::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name), // auto slug
+            'description' => $request->description,
+            'icon' => $request->icon,
+        ]);
 
-        Category::create($data);
-
-        return redirect()->route('admin.categories.create')->with('success', 'Category created successfully!');
+        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Show edit form
+    public function edit(Category $category)
     {
-        //
+        return view('admin.categories.edit', compact('category'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    // Update category
+    public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string',
+            'icon' => 'nullable|string',
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'icon' => $request->icon,
+        ]);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Delete category
+    public function destroy(Category $category)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $category->delete();
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully!');
     }
 }

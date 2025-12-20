@@ -11,7 +11,11 @@
 </style>
 @endsection
 @section('page-title')
-   <h1 class="h3">Courses</h1>
+<div class="d-flex justify-content-between align-items-center">
+<h1 class="h3">Courses</h1>
+<a href="{{ route('courses.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Course</a>
+</div>  
+   
 @endsection
 
 @section('content')

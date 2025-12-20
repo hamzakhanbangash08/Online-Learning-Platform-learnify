@@ -305,7 +305,7 @@
                                 </button>
                             </form>
                            @if($course->quizzes->count())
-                                <a href="{{ route('admin.course.myquizzes', $course->id) }}" target="_blank" class="btn btn-sm btn-action edit-btn">
+                                <a href="{{ route('course.myquizzes', $course->id) }}" target="_blank" class="btn btn-sm btn-action edit-btn">
                                     <i class="bi bi-clipboard-check me-2"></i>
                                     View All {{ $course->quizzes->count() }} {{ Str::plural('Quiz', $course->quizzes->count()) }}
                                 </a>

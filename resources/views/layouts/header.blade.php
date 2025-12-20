@@ -164,20 +164,27 @@ body {
 
 
 /* Primary Button Styling */
-.button-primary {
+/* Anchor with .button-primary */
+a.button-primary {
+    display: inline-block; /* button jaisa banane ke liye */
     background: linear-gradient(45deg, #4e73df, #224abe);
-    color: #fff;
+    color: #fff !important;
     border: none;
     font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.button-primary:hover {
+a.button-primary:hover {
     background: linear-gradient(45deg, #224abe, #4e73df);
     transform: translateY(-2px);
-    color: #fff;
+    color: #fff !important;
+    text-decoration: none; /* underline hatao */
 }
+
 
 /* Link styling */
 .form-text a {
