@@ -23,6 +23,9 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<!-- Orbitron Font (Digital look) -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+
     @yield('styles')
 </head>
 

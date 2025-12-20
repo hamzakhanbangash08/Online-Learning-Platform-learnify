@@ -32,10 +32,10 @@ class QuizAttemptController extends Controller
         // count attempts of this user for this quiz
         $attemptsCount = $quiz->attempts()->where('user_id', $user->id)->count();
 
-        if ($quiz->max_attempts > 0 && $attemptsCount >= $quiz->max_attempts) {
-            return redirect()->route('quiz.resultHistory')
-                ->with('error', '⚠️ You have reached the maximum attempts for this quiz.');
-        }
+        // if ($quiz->max_attempts > 0 && $attemptsCount >= $quiz->max_attempts) {
+        //     return redirect()->route('quiz.resultHistory')
+        //         ->with('error', '⚠️ You have reached the maximum attempts for this quiz.');
+        // }
 
         $quiz->load('questions.options');
         return view('quiz.start', compact('quiz'));

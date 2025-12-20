@@ -22,7 +22,7 @@ class LoginController extends Controller
 
         // Admin ke liye
         if ($user->hasRole('admin')) {
-            return redirect()->route('admin.analytics');
+            return redirect()->route('admin.categories.index');
         }
 
         // Student / Instructor ke liye
@@ -31,7 +31,7 @@ class LoginController extends Controller
         }
 
         // Fallback
-        return redirect('/404');
+        return redirect('/logout');
     }
 
     public function __construct()

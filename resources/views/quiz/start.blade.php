@@ -1,18 +1,37 @@
 @extends('layouts.master')
 
+@section('title', 'Quiz')
+
+@section('styles')
+<style></style>
+@endsection
 @section('content')
 <div class="container py-5">
 
     {{-- Timer --}}
-    <div class="alert alert-warning d-flex justify-content-between align-items-center">
-        <span>
-            ⏳ Time Limit:
-            {{ $quiz->duration_minutes > 0 ? $quiz->duration_minutes . ' minutes' : 'No Limit' }}
-        </span>
-        <span id="timer" class="fw-bold text-danger">
-            {{ $quiz->duration_minutes > 0 ? gmdate('i:s', $quiz->duration_minutes * 60) : '' }}
-        </span>
+    <div class="alert alert-dark d-flex justify-content-between align-items-center rounded-4 shadow-lg p-3" 
+     style="background: linear-gradient(145deg, #000000, #1a1a1a); border: 2px solid #333;">
+
+    <span class="text-light fw-semibold">
+        ⏳ Time Limit: 
+        {{ $quiz->duration_minutes > 0 ? $quiz->duration_minutes . ' minutes' : 'No Limit' }}
+    </span>
+
+    <!-- Digital Watch Timer -->
+    <div id="timer" 
+         class="fw-bold text-danger px-4 py-2 rounded-3 shadow-sm" 
+         style="
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            background: #000;
+            color: #ff2e2e;
+            border: 2px solid #444;
+            border-radius: 12px;
+            text-shadow: 0 0 8px #ff0000, 0 0 15px #ff3333;
+         ">
+        {{ $quiz->duration_minutes > 0 ? gmdate('i:s', $quiz->duration_minutes * 60) : '--:--' }}
     </div>
+</div>
 
     <h2 class="mb-2">{{ $quiz->title }}</h2>
     <p class="text-muted mb-4">{{ $quiz->description }}</p>

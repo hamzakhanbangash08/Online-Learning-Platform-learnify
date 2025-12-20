@@ -24,11 +24,11 @@ use App\Http\Controllers\Admin\QuestionController;
 | Public Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return auth()->check()
-        ? redirect()->route('home') // already logged in → home
-        : view('auth.login');       // guest → login page
-});
+// Route::get('/', function () {
+//     return auth()->check()
+//         ? redirect()->route('home') // already logged in → home
+//         : view('auth.login');       // guest → login page
+// });
 
 // Google login routes
 Route::get('auth/google', [LoginController::class, 'redirectToGoogle'])->name('google.login');
@@ -43,8 +43,10 @@ Route::get('/certificate/verify/{token}', [CertificateController::class, 'verify
 /*
 |--------------------------------------------------------------------------
 | Authenticated User Routes
-|--------------------------------------------------------------------------
+|----course
+----------------------------------------------------------------------
 */
+ Route::get('/home', [App\Http\Controllers\HomeController::class, 'browseCategory'])->name('home');
 Route::middleware(['auth'])->group(function () {
 
     // User home page
@@ -69,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/my-results', [QuizAttemptController::class, 'myResults'])->name('quiz.myResults');
     Route::get('/quiz/{attempt}/certificate', [QuizAttemptController::class, 'generateCertificate'])->name('quiz.certificate');
     Route::get('/certificate/{certificate}/download', [QuizAttemptController::class, 'download'])->name('certificate.download');
+     Route::get('/courses/{course}/quizzes', [QuizController::class, 'quizpage'])->name('course.myquizzes');
 });
 
 /*
@@ -94,7 +97,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'checkrole:admin'])-
 
     // Quiz Management
     Route::resource('quizzes', QuizController::class);
-    Route::get('/courses/{course}/quizzes', [QuizController::class, 'quizpage'])->name('course.myquizzes');
+   
 
     Route::resource('questions', QuestionController::class)->except(['create', 'show', 'edit']);
     Route::resource('options', OptionController::class)->except(['create', 'show', 'edit']);

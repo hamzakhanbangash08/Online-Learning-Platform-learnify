@@ -268,7 +268,9 @@
             </div>
         </div>
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-custom btn-custom-primary">View All Courses</a>
+         {{-- Normal button --}}
+{{-- 3. Theme Config Color (Orange from config/theme.php) --}}
+<x-dynamic-button variant="orange" size="lg" icon="star">Orange Config</x-dynamic-button>
         </div>
     </div>
 </section>
